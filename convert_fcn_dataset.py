@@ -66,7 +66,7 @@ def dict_to_tf_example(data, label):
         'image/filename': dataset_util.bytes_feature(
             filename_data.encode('utf8')),
         'image/encoded': dataset_util.bytes_feature(encoded_data),
-        'image/label': dataset_util.int64_list_feature(encoded_label),
+        'image/label': dataset_util.bytes_feature(encoded_label),
         'image/format': dataset_util.bytes_feature('jpeg'.encode('utf8')),
     }
     example = tf.train.Example(features=tf.train.Features(feature=feature_dict))
@@ -78,7 +78,7 @@ def create_tf_record(output_filename, file_pars):
 
     writer = tf.python_io.TFRecordWriter(output_filename)
     for (data,label) in file_pars:
-        print(data, label)
+        #print(data, label)
         if not os.path.exists(str(data)):
             logging.warning('Could not find %s, ignoring data.', data)
             continue
@@ -106,10 +106,24 @@ def read_images_names(root, train=True):
 
     data = []
     label = []
+    counter=0
+    allitems = len(images)//500
+    print("allitems: ", allitems)
     for fname in images:
         data.append('%s/JPEGImages/%s.jpg' % (root, fname))
         label.append('%s/SegmentationClass/%s.png' % (root, fname))
-    return zip(data, label)
+        files = zip(data, label)
+        if counter % 500 == 0 and counter>0:
+            output_path = os.path.join(FLAGS.output_dir, 
+                'fcn_train_%05dof%05d.record'%(counter//500-1, allitems) if train else 'fcn_val_%05dof%05d.record'%(counter//500-1, allitems))
+            create_tf_record(output_path, files)
+            data = []
+            label = []
+        counter += 1
+        if counter==len(images):
+            output_path = os.path.join(FLAGS.output_dir, 
+                'fcn_train_%05dof%05d.record'%(counter//500, allitems) if train else 'fcn_val_%05dof%05d.record'%(counter//500, allitems))
+            create_tf_record(output_path, files)
 
 
 def main(_):
@@ -118,10 +132,10 @@ def main(_):
     train_output_path = os.path.join(FLAGS.output_dir, 'fcn_train.record')
     val_output_path = os.path.join(FLAGS.output_dir, 'fcn_val.record')
 
-    train_files = read_images_names(FLAGS.data_dir, True)
-    val_files = read_images_names(FLAGS.data_dir, False)
-    create_tf_record(train_output_path, train_files)
-    create_tf_record(val_output_path, val_files)
+    read_images_names(FLAGS.data_dir, True)
+    read_images_names(FLAGS.data_dir, False)
+    #create_tf_record(train_output_path, train_files)
+    #create_tf_record(val_output_path, val_files)
 
 
 if __name__ == '__main__':
