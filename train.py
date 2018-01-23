@@ -108,9 +108,6 @@ with tf.variable_scope('vgg_16/fc8'):
                                  weights_initializer=tf.zeros_initializer,
                                  scope='conv_pool3')
 
-
-
-with tf.variable_scope('vgg_16/fc8'):
     aux_logits_16s = slim.conv2d(pool4_feature, number_of_classes, [1, 1],
                                  activation_fn=None,
                                  weights_initializer=tf.zeros_initializer,
