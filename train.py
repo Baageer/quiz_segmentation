@@ -24,6 +24,7 @@ def parse_args(check=True):
     parser = argparse.ArgumentParser()
     parser.add_argument('--checkpoint_path', type=str)
     parser.add_argument('--output_dir', type=str)
+    parser.add_argument('--dataset_dir', type=str)
     parser.add_argument('--dataset_train', type=str)
     parser.add_argument('--dataset_val', type=str)
     parser.add_argument('--batch_size', type=int, default=16)
@@ -43,14 +44,21 @@ tf.reset_default_graph()
 is_training_placeholder = tf.placeholder(tf.bool)
 batch_size = FLAGS.batch_size
 
-dataset_traina = ['/data/weixin-39265957/quiz-w9-data/fcn_train_00000of00002.record',
-                  '/data/weixin-39265957/quiz-w9-data/fcn_train_00001of00002.record',
-                  '/data/weixin-39265957/quiz-w9-data/fcn_train_00002of00002.record']
-dataset_vala = ['/data/weixin-39265957/quiz-w9-data/fcn_val_00000of00002.record',
-                '/data/weixin-39265957/quiz-w9-data/fcn_val_00001of00002.record',
-                '/data/weixin-39265957/quiz-w9-data/fcn_val_00002of00002.record']
-image_tensor_train, orig_img_tensor_train, annotation_tensor_train = inputs(dataset_traina, train=True, batch_size=batch_size, num_epochs=1e4)
-image_tensor_val, orig_img_tensor_val, annotation_tensor_val = inputs(dataset_vala, train=False, num_epochs=1e4)
+dataset_train_list = []
+dataset_val_list = []
+files = os.listdir(FLAGS.dataset_dir)
+for name in files:
+    p,f = os.path.splitext(name)
+    if p.find(FLAGS.dataset_train) >= 0:
+        dataset_train_list.append(os.path.join(FLAGS.dataset_dir, name))
+    elif p.find(FLAGS.dataset_val) >= 0:
+        dataset_val_list.append(os.path.join(FLAGS.dataset_dir, name))
+
+print('dataset_train_list: ', dataset_train_list)
+print('dataset_val_list: ', dataset_val_list)
+
+image_tensor_train, orig_img_tensor_train, annotation_tensor_train = inputs(dataset_train_list, train=True, batch_size=batch_size, num_epochs=1e4)
+image_tensor_val, orig_img_tensor_val, annotation_tensor_val = inputs(dataset_val_list, train=False, num_epochs=1e4)
 
 image_tensor, orig_img_tensor, annotation_tensor = tf.cond(is_training_placeholder,
                                                            true_fn=lambda: (image_tensor_train, orig_img_tensor_train, annotation_tensor_train),
