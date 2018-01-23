@@ -52,19 +52,19 @@ tinymind运行结果：https://www.tinymind.com/executions/b6lc9zc9
 
 原图
 
-![val_2000_img](F:\GitHub\quiz_segmentation\val_2000_img.jpg)
+![val_2000_img](https://github.com/Baageer/quiz_segmentation/blob/master/val_2000_img.jpg)
 
 标签
 
-![val_2000_annotation](F:\GitHub\quiz_segmentation\val_2000_annotation.jpg)
+![val_2000_annotation](https://github.com/Baageer/quiz_segmentation/blob/master/val_2000_annotation.jpg)
 
 预测
 
-![val_2000_prediction](F:\GitHub\quiz_segmentation\val_2000_prediction.jpg)
+![val_2000_prediction](https://github.com/Baageer/quiz_segmentation/blob/master/val_2000_prediction.jpg)
 
 CRF之后的预测
 
-![val_2000_prediction_crfed](F:\GitHub\quiz_segmentation\val_2000_prediction_crfed.jpg)
+![val_2000_prediction_crfed](https://github.com/Baageer/quiz_segmentation/blob/master/val_2000_prediction_crfed.jpg)
 
 
 
@@ -72,19 +72,19 @@ CRF之后的预测
 
 原图
 
-![val_3600_img](F:\GitHub\quiz_segmentation\val_3600_img.jpg)
+![val_3600_img](https://github.com/Baageer/quiz_segmentation/blob/master/val_3600_img.jpg)
 
 标签
 
-![val_3600_annotation](F:\GitHub\quiz_segmentation\val_3600_annotation.jpg)
+![val_3600_annotation](https://github.com/Baageer/quiz_segmentation/blob/master/val_3600_annotation.jpg)
 
 预测
 
-![val_3600_prediction](F:\GitHub\quiz_segmentation\val_3600_prediction.jpg)
+![val_3600_prediction](https://github.com/Baageer/quiz_segmentation/blob/master/val_3600_prediction.jpg)
 
 CRF之后的预测
 
-![val_3600_prediction_crfed](F:\GitHub\quiz_segmentation\val_3600_prediction_crfed.jpg)
+![val_3600_prediction_crfed](https://github.com/Baageer/quiz_segmentation/blob/master/val_3600_prediction_crfed.jpg)
 
 
 
