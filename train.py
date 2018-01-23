@@ -43,8 +43,14 @@ tf.reset_default_graph()
 is_training_placeholder = tf.placeholder(tf.bool)
 batch_size = FLAGS.batch_size
 
-image_tensor_train, orig_img_tensor_train, annotation_tensor_train = inputs(FLAGS.dataset_train, train=True, batch_size=batch_size, num_epochs=1e4)
-image_tensor_val, orig_img_tensor_val, annotation_tensor_val = inputs(FLAGS.dataset_val, train=False, num_epochs=1e4)
+dataset_traina = ['/data/weixin-39265957/quiz-w9-data/fcn_train_00000of00002.record',
+                  '/data/weixin-39265957/quiz-w9-data/fcn_train_00001of00002.record',
+                  '/data/weixin-39265957/quiz-w9-data/fcn_train_00002of00002.record']
+dataset_vala = ['/data/weixin-39265957/quiz-w9-data/fcn_val_00000of00002.record',
+                '/data/weixin-39265957/quiz-w9-data/fcn_val_00001of00002.record',
+                '/data/weixin-39265957/quiz-w9-data/fcn_val_00002of00002.record']
+image_tensor_train, orig_img_tensor_train, annotation_tensor_train = inputs(dataset_traina, train=True, batch_size=batch_size, num_epochs=1e4)
+image_tensor_val, orig_img_tensor_val, annotation_tensor_val = inputs(dataset_vala, train=False, num_epochs=1e4)
 
 image_tensor, orig_img_tensor, annotation_tensor = tf.cond(is_training_placeholder,
                                                            true_fn=lambda: (image_tensor_train, orig_img_tensor_train, annotation_tensor_train),
@@ -71,7 +77,7 @@ with slim.arg_scope(vgg.vgg_arg_scope()):
                                     spatial_squeeze=False,
                                     fc_conv_padding='SAME')
 
-downsampled_logits_shape = tf.shape(logits)
+downsampled_logits_shape = tf.shape(logits)   #7*7*4096
 
 img_shape = tf.shape(image_tensor)
 
